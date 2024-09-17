@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CircleData" load_steps=3 format=3 uid="uid://chklk0rqda3n5"]
+
+[ext_resource type="Script" path="res://Scripts/CircleData.gd" id="1_0sufn"]
+[ext_resource type="Texture2D" uid="uid://n1mcqoymuk7b" path="res://Sprites/Spheres/2.png" id="1_y1luo"]
+
+[resource]
+script = ExtResource("1_0sufn")
+circle_sprite = ExtResource("1_y1luo")
+camera_zoom = 8.0
+camera_y_offset = -10.0

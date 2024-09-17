@@ -1,0 +1,25 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bodjga4u4t6ny"]
+
+[ext_resource type="FontFile" uid="uid://xuh3pqs4u50y" path="res://Fonts/ark-pixel-font-12px-proportional-ttf-v2024.05.12/ark-pixel-12px-proportional-zh_cn.ttf" id="1_60gar"]
+[ext_resource type="Texture2D" uid="uid://dw7cetmnumr6p" path="res://Sprites/MainMenuButtons.png" id="1_b27pd"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rj5fe"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gnqsc"]
+texture = ExtResource("1_b27pd")
+modulate_color = Color(0.856927, 0.856927, 0.856927, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dux6q"]
+texture = ExtResource("1_b27pd")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u0l0y"]
+texture = ExtResource("1_b27pd")
+modulate_color = Color(0.589903, 0.589903, 0.589903, 1)
+
+[resource]
+default_font = ExtResource("1_60gar")
+default_font_size = 32
+Button/styles/focus = SubResource("StyleBoxTexture_rj5fe")
+Button/styles/hover = SubResource("StyleBoxTexture_gnqsc")
+Button/styles/normal = SubResource("StyleBoxTexture_dux6q")
+Button/styles/pressed = SubResource("StyleBoxTexture_u0l0y")

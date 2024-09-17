@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8djyockdb72u"]
+
+[ext_resource type="Script" path="res://Scripts/light_up_area.gd" id="1_4laya"]
+
+[node name="LightUpArea" type="Marker2D"]
+gizmo_extents = 8.0
+script = ExtResource("1_4laya")

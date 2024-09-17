@@ -1,0 +1,129 @@
+[gd_scene load_steps=14 format=3 uid="uid://l37suanesivf"]
+
+[ext_resource type="Script" path="res://Scripts/GrowToken.gd" id="1_w7y0w"]
+[ext_resource type="Texture2D" uid="uid://d0blkhkqutrn5" path="res://Sprites/grow_token.png" id="2_a4f25"]
+[ext_resource type="Texture2D" uid="uid://ba0oubqb1ud30" path="res://Sprites/Lights/gate_light.tres" id="3_1r3oi"]
+[ext_resource type="PackedScene" uid="uid://b8djyockdb72u" path="res://Prefabs/light_up_area.tscn" id="4_l7exe"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sb8j3"]
+size = Vector2(8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wvssq"]
+atlas = ExtResource("2_a4f25")
+region = Rect2(0, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hj70r"]
+atlas = ExtResource("2_a4f25")
+region = Rect2(8, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ym0mt"]
+atlas = ExtResource("2_a4f25")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1113o"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wvssq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hj70r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ym0mt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hj70r")
+}],
+"loop": true,
+"name": &"default",
+"speed": 4.0
+}]
+
+[sub_resource type="Animation" id="Animation_0qhcw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_jym8b"]
+resource_name = "hover"
+length = 2.0
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5i02x"]
+_data = {
+"RESET": SubResource("Animation_0qhcw"),
+"hover": SubResource("Animation_jym8b")
+}
+
+[sub_resource type="Curve" id="Curve_c7ree"]
+_data = [Vector2(0.507634, 0.488847), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="GrowToken" type="Area2D"]
+script = ExtResource("1_w7y0w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_sb8j3")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(0.39941, 0.878335, 0.380418, 1)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_1113o")
+autoplay = "default"
+frame_progress = 0.77879
+
+[node name="Glow" type="Sprite2D" parent="AnimatedSprite2D"]
+modulate = Color(0.494118, 0.898039, 0.470588, 0.396078)
+rotation = 0.785398
+scale = Vector2(2, 2)
+texture = ExtResource("3_1r3oi")
+
+[node name="LightUpArea" parent="." instance=ExtResource("4_l7exe")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_5i02x")
+}
+autoplay = "hover"
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+light_mask = 0
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 60.0
+angular_velocity_min = -200.0
+angular_velocity_max = 200.0
+linear_accel_min = -300.0
+linear_accel_max = -300.0
+scale_amount_curve = SubResource("Curve_c7ree")
+color = Color(0.380398, 0.81409, 0.274725, 1)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://dmr43ng1u1ipq"]
+
+[ext_resource type="Shader" path="res://Shaders/player.gdshader" id="1_g4xrx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pd1kq"]
+shader = ExtResource("1_g4xrx")
+
+[sub_resource type="Curve" id="Curve_jnwjy"]
+_data = [Vector2(0.507634, 0.488847), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_ks7ot"]
+offsets = PackedFloat32Array(0.544693, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="DieParticle" type="CPUParticles2D"]
+light_mask = 0
+material = SubResource("ShaderMaterial_pd1kq")
+emitting = false
+amount = 40
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 60.0
+angular_velocity_min = -200.0
+angular_velocity_max = 200.0
+linear_accel_min = -300.0
+linear_accel_max = -300.0
+scale_amount_curve = SubResource("Curve_jnwjy")
+color_ramp = SubResource("Gradient_ks7ot")

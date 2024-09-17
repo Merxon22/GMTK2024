@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckdljyedv7xe6"]
+
+[ext_resource type="AudioStream" uid="uid://udsoqyi4w6bg" path="res://audio/Elevator Music (loop).mp3" id="1_aq8q8"]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_aq8q8")
+volume_db = -10.0
+autoplay = true

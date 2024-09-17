@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://chugp2y7y1xgd"]
+
+[ext_resource type="Script" path="res://Prefabs/TrailRenderer.gd" id="1_pogip"]
+
+[sub_resource type="Curve" id="Curve_4ap8d"]
+_data = [Vector2(0, 0.184406), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_fx0tl"]
+offsets = PackedFloat32Array(0, 0.427374)
+colors = PackedColorArray(1, 1, 1, 0.12549, 1, 1, 1, 0.501961)
+
+[node name="Trail" type="Line2D"]
+top_level = true
+points = PackedVector2Array(58, 107, 72, 117, 82, 114, 94, 122)
+width = 1.0
+width_curve = SubResource("Curve_4ap8d")
+gradient = SubResource("Gradient_fx0tl")
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+script = ExtResource("1_pogip")

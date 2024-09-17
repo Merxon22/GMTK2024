@@ -1,0 +1,33 @@
+[gd_scene load_steps=8 format=3 uid="uid://d13tth8onblpt"]
+
+[ext_resource type="Texture2D" uid="uid://n1mcqoymuk7b" path="res://Sprites/Spheres/2.png" id="1_0lqbs"]
+[ext_resource type="Shader" path="res://Shaders/player.gdshader" id="1_gxut0"]
+[ext_resource type="PackedScene" uid="uid://chugp2y7y1xgd" path="res://Prefabs/trail.tscn" id="2_fkio3"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3ip14"]
+friction = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fapmi"]
+shader = ExtResource("1_gxut0")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h4jkk"]
+size = Vector2(2, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pedlg"]
+shader = ExtResource("1_gxut0")
+
+[node name="PlayerDummy" type="RigidBody2D"]
+physics_material_override = SubResource("PhysicsMaterial_3ip14")
+gravity_scale = 0.6
+can_sleep = false
+linear_damp = 1.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_fapmi")
+texture = ExtResource("1_0lqbs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_h4jkk")
+
+[node name="Trail" parent="." instance=ExtResource("2_fkio3")]
+material = SubResource("ShaderMaterial_pedlg")

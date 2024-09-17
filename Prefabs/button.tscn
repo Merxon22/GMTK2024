@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://puf5fksv0qk6"]
+
+[ext_resource type="Texture2D" uid="uid://ccnl3negqbuly" path="res://Sprites/square.tres" id="1_062mh"]
+[ext_resource type="Script" path="res://Scripts/button.gd" id="1_fmhed"]
+[ext_resource type="Texture2D" uid="uid://cr104fv5eefuk" path="res://Sprites/Lights/danger_light.tres" id="3_avuc3"]
+[ext_resource type="AudioStream" uid="uid://dluvujjmrnm48" path="res://audio/button_pressed.mp3" id="4_7sqs7"]
+[ext_resource type="PackedScene" uid="uid://b8djyockdb72u" path="res://Prefabs/light_up_area.tscn" id="5_04nlj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u8kfq"]
+size = Vector2(8, 2)
+
+[node name="Button" type="Area2D" node_paths=PackedStringArray("button_sprite")]
+modulate = Color(0.616179, 0.80719, 0.847156, 1)
+script = ExtResource("1_fmhed")
+button_sprite = NodePath("Sprite")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(4, 1)
+texture = ExtResource("1_062mh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_u8kfq")
+
+[node name="Glow" type="Sprite2D" parent="."]
+clip_children = 1
+position = Vector2(0, -6)
+texture = ExtResource("1_062mh")
+region_enabled = true
+region_rect = Rect2(0, 0, 24, 12)
+
+[node name="Glow2" type="Sprite2D" parent="Glow"]
+self_modulate = Color(1, 1, 1, 0.25098)
+position = Vector2(0, 6)
+rotation = 0.785398
+texture = ExtResource("3_avuc3")
+region_rect = Rect2(0, 0, 24, 12)
+
+[node name="PressedSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_7sqs7")
+
+[node name="LightUpArea" parent="." instance=ExtResource("5_04nlj")]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

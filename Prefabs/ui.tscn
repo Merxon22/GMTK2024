@@ -1,0 +1,141 @@
+[gd_scene load_steps=7 format=3 uid="uid://2dgtekypux40"]
+
+[ext_resource type="Script" path="res://Scripts/UIManager.gd" id="1_q2p0l"]
+[ext_resource type="AudioStream" uid="uid://capslel3ifk16" path="res://audio/ShowHint.mp3" id="2_gkuou"]
+[ext_resource type="Texture2D" uid="uid://byv4lcl07uwva" path="res://Sprites/Collectible_full.png" id="2_h5tnq"]
+
+[sub_resource type="Animation" id="Animation_2ynhl"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_gw456"]
+resource_name = "score_pop"
+length = 0.5
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.1, 0, 0.8, -0.1, 0, 0.1, 0, 1.25, -0.1, 0, 0.1, 0, 1, -0.1, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.15, 0.35, 0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.1, 0, 2, -0.1, 0, 0.1, 0, 0.8, -0.1, 0, 0.1, 0, 1, -0.1, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.15, 0.35, 0.5)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_g1vyr"]
+_data = {
+"RESET": SubResource("Animation_2ynhl"),
+"score_pop": SubResource("Animation_gw456")
+}
+
+[node name="UI" type="CanvasLayer" node_paths=PackedStringArray("hint_label", "point_label", "point_image", "menu_button")]
+script = ExtResource("1_q2p0l")
+hint_label = NodePath("Hint")
+point_label = NodePath("PointCount/Label")
+point_sprite = ExtResource("2_h5tnq")
+point_image = NodePath("PointCount")
+menu_button = NodePath("MenuButton")
+
+[node name="Hint" type="Label" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -355.0
+offset_top = -126.0
+offset_right = 355.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 16
+text = "[Space] to Jump
+Second line.."
+horizontal_alignment = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Hint"]
+stream = ExtResource("2_gkuou")
+
+[node name="PointCount" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(30, 60)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 17.0
+offset_top = -136.0
+offset_right = 47.0
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_h5tnq")
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="PointCount"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 7.0
+offset_top = -36.0
+offset_right = 146.0
+offset_bottom = 36.0
+grow_horizontal = 0
+grow_vertical = 2
+pivot_offset = Vector2(60.55, 36)
+size_flags_horizontal = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 24
+theme_override_font_sizes/font_size = 48
+text = "0/0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PointCount"]
+libraries = {
+"": SubResource("AnimationLibrary_g1vyr")
+}
+
+[node name="MenuButton" type="Button" parent="."]
+offset_left = 27.0
+offset_top = 33.0
+offset_right = 192.0
+offset_bottom = 88.0
+theme_override_font_sizes/font_size = 24
+
+[connection signal="pressed" from="MenuButton" to="." method="_back_to_menu"]

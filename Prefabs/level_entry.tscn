@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://bmj17y1xe4o75"]
+
+[ext_resource type="Script" path="res://Scripts/level_entry.gd" id="1_2urkc"]
+[ext_resource type="Texture2D" uid="uid://cjf8mu3ovb5wh" path="res://Sprites/Paintings/canvas display empty.png" id="2_feel5"]
+[ext_resource type="Shader" path="res://Shaders/sprite_outline.gdshader" id="3_dh1y6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f2bp4"]
+shader = ExtResource("3_dh1y6")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_width = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ej2fl"]
+size = Vector2(8, 16)
+
+[node name="LevelEntry" type="Area2D" node_paths=PackedStringArray("canvas_sprite", "level_name_label")]
+script = ExtResource("1_2urkc")
+locked_sprite = ExtResource("2_feel5")
+unlocked_sprite = ExtResource("2_feel5")
+canvas_sprite = NodePath("CanvasDisplayHorizontal")
+level_name_label = NodePath("Label")
+painting_name = "???"
+hint_content = "...Press [ENTER] to play..."
+
+[node name="CanvasDisplayHorizontal" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_f2bp4")
+position = Vector2(0, -3.625)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_feel5")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -10.5
+offset_top = -13.0
+offset_right = 829.5
+offset_bottom = 187.0
+scale = Vector2(0.025, 0.025)
+theme_override_colors/font_outline_color = Color(0.247059, 0.219608, 0.317647, 1)
+theme_override_constants/outline_size = 40
+theme_override_font_sizes/font_size = 64
+text = "Level 1
+Mona Lisa"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_ej2fl")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

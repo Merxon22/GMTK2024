@@ -1,0 +1,171 @@
+[gd_scene load_steps=16 format=3 uid="uid://kfeqodgvm26u"]
+
+[ext_resource type="Script" path="res://Scripts/pickup_point.gd" id="1_y824y"]
+[ext_resource type="Texture2D" uid="uid://dqlyv47tu8elx" path="res://Sprites/Collectible.png" id="2_000ey"]
+[ext_resource type="Texture2D" uid="uid://bdl02vl8eqvck" path="res://Sprites/Lights/score_light.tres" id="3_n2dx2"]
+[ext_resource type="PackedScene" uid="uid://b8djyockdb72u" path="res://Prefabs/light_up_area.tscn" id="4_vkgb8"]
+[ext_resource type="AudioStream" uid="uid://dp7jdv8yo6wij" path="res://audio/PickupPoint.mp3" id="5_aw7v2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dhm7k"]
+radius = 5.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dyvby"]
+atlas = ExtResource("2_000ey")
+region = Rect2(0, 0, 5, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_63tex"]
+atlas = ExtResource("2_000ey")
+region = Rect2(5, 0, 5, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xwfnb"]
+atlas = ExtResource("2_000ey")
+region = Rect2(10, 0, 5, 10)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_t1fy5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dyvby")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_63tex")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xwfnb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_63tex")
+}],
+"loop": true,
+"name": &"default",
+"speed": 3.0
+}]
+
+[sub_resource type="Curve" id="Curve_rf00g"]
+_data = [Vector2(0.507634, 0.488847), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_vtxnk"]
+offsets = PackedFloat32Array(0.544693, 1)
+colors = PackedColorArray(1, 0.694118, 0.321569, 1, 1, 0.694118, 0.321569, 0)
+
+[sub_resource type="Animation" id="Animation_n5vce"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UnpickedSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PickedSprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_e17yr"]
+resource_name = "hover"
+length = 2.0
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UnpickedSprite:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 1), Vector2(0, -1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PickedSprite:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 1), Vector2(0, -1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2w26m"]
+_data = {
+"RESET": SubResource("Animation_n5vce"),
+"hover": SubResource("Animation_e17yr")
+}
+
+[node name="PickupPoint" type="Area2D"]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_y824y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_dhm7k")
+
+[node name="UnpickedSprite" type="AnimatedSprite2D" parent="."]
+modulate = Color(0.857124, 0.786964, 0.56228, 1)
+self_modulate = Color(0.858824, 0.788235, 0.560784, 1)
+sprite_frames = SubResource("SpriteFrames_t1fy5")
+autoplay = "default"
+frame_progress = 0.469255
+
+[node name="PickedSprite" type="Sprite2D" parent="."]
+visible = false
+light_mask = 0
+z_index = 1
+texture = ExtResource("2_000ey")
+region_enabled = true
+region_rect = Rect2(15, 0, 5, 10)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="PickedSprite"]
+light_mask = 0
+amount = 20
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 90.0
+initial_velocity_max = 110.0
+angular_velocity_min = -200.0
+angular_velocity_max = 200.0
+linear_accel_min = -300.0
+linear_accel_max = -300.0
+scale_amount_curve = SubResource("Curve_rf00g")
+color_ramp = SubResource("Gradient_vtxnk")
+
+[node name="Glow" type="Sprite2D" parent="PickedSprite"]
+modulate = Color(0.886275, 0.796078, 0.619608, 0.25098)
+z_index = -1
+rotation = 0.785398
+scale = Vector2(2, 2)
+texture = ExtResource("3_n2dx2")
+
+[node name="LightUpArea" parent="." instance=ExtResource("4_vkgb8")]
+size = 8.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_2w26m")
+}
+autoplay = "hover"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_aw7v2")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

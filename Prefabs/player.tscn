@@ -1,0 +1,149 @@
+[gd_scene load_steps=24 format=3 uid="uid://cnp2egxbeerrk"]
+
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_e7euc"]
+[ext_resource type="Shader" path="res://Shaders/player.gdshader" id="2_2v545"]
+[ext_resource type="Texture2D" uid="uid://n1mcqoymuk7b" path="res://Sprites/Spheres/2.png" id="2_6huyt"]
+[ext_resource type="Script" path="res://Scripts/CircleShifter.gd" id="3_1gte4"]
+[ext_resource type="Script" path="res://Scripts/CircleData.gd" id="4_cu56s"]
+[ext_resource type="Resource" uid="uid://chklk0rqda3n5" path="res://Resources/circle_2.tres" id="5_khntb"]
+[ext_resource type="Resource" uid="uid://ccdp5svtijexk" path="res://Resources/circle_4.tres" id="6_e0a8f"]
+[ext_resource type="PackedScene" uid="uid://d13tth8onblpt" path="res://Prefabs/player_dummy.tscn" id="9_3bgmc"]
+[ext_resource type="AudioStream" uid="uid://re1kb1ogb7i7" path="res://audio/PlayerGrow.mp3" id="13_rm8eo"]
+[ext_resource type="PackedScene" uid="uid://chugp2y7y1xgd" path="res://Prefabs/trail.tscn" id="15_n1dtm"]
+[ext_resource type="AudioStream" uid="uid://bguxpaadb7iil" path="res://audio/die.mp3" id="16_t3n7g"]
+[ext_resource type="AudioStream" uid="uid://bfo41d5dbo78a" path="res://audio/jump.mp3" id="17_imu38"]
+[ext_resource type="PackedScene" uid="uid://dmr43ng1u1ipq" path="res://Prefabs/die_particle.tscn" id="18_lakc4"]
+[ext_resource type="AudioStream" uid="uid://x6j7k8i0phxc" path="res://audio/LevelFinish.mp3" id="19_whd4b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6v7ps"]
+size = Vector2(2, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_alvl1"]
+shader = ExtResource("2_2v545")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vhhnn"]
+shader = ExtResource("2_2v545")
+
+[sub_resource type="Curve" id="Curve_xaf06"]
+_data = [Vector2(0.492366, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_35njq"]
+shader = ExtResource("2_2v545")
+
+[sub_resource type="Animation" id="Animation_7gl0w"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_psvwx"]
+resource_name = "jump_left"
+length = 0.25
+step = 0.01
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0, 0, -1.5708, 0, 0, 0.125, 0),
+"times": PackedFloat32Array(0, 0.25)
+}
+
+[sub_resource type="Animation" id="Animation_vt2p0"]
+resource_name = "jump_right"
+length = 0.25
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.5708]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nkllg"]
+_data = {
+"RESET": SubResource("Animation_7gl0w"),
+"jump_left": SubResource("Animation_psvwx"),
+"jump_right": SubResource("Animation_vt2p0")
+}
+
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("collider")]
+script = ExtResource("1_e7euc")
+collider = NodePath("CollisionShape2D")
+jump_velocity = -110.0
+acceleration = 30.0
+max_x_velocity = 40.0
+die_particle = ExtResource("18_lakc4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_6v7ps")
+
+[node name="Sprite" type="Sprite2D" parent="." node_paths=PackedStringArray("player", "collider", "particle_sys")]
+z_index = 1
+material = SubResource("ShaderMaterial_alvl1")
+texture = ExtResource("2_6huyt")
+region_rect = Rect2(24, 0, 12, 12)
+script = ExtResource("3_1gte4")
+circle_data_array = Array[ExtResource("4_cu56s")]([ExtResource("5_khntb"), ExtResource("6_e0a8f")])
+player = NodePath("..")
+collider = NodePath("../CollisionShape2D")
+particle_sys = NodePath("CPUParticles2D")
+player_dummy = ExtResource("9_3bgmc")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Sprite"]
+material = SubResource("ShaderMaterial_vhhnn")
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 0.9
+fixed_fps = 30
+direction = Vector2(0, -10)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 60.0
+angular_velocity_min = -100.0
+angular_velocity_max = 100.0
+linear_accel_min = -200.0
+linear_accel_max = -200.0
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_curve = SubResource("Curve_xaf06")
+
+[node name="Trail" parent="." instance=ExtResource("15_n1dtm")]
+material = SubResource("ShaderMaterial_35njq")
+
+[node name="DieSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("16_t3n7g")
+
+[node name="JumpSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("17_imu38")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_nkllg")
+}
+
+[node name="LevelFinishSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("19_whd4b")
+
+[node name="GrowSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_rm8eo")

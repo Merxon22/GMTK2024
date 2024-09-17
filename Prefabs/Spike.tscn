@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://cvws7h05pvqli"]
+
+[ext_resource type="Script" path="res://Scripts/Spike.gd" id="1_330nq"]
+[ext_resource type="Texture2D" uid="uid://h6e42btlsnhu" path="res://Sprites/Tilesets/TileContent.png" id="1_uujbv"]
+[ext_resource type="Texture2D" uid="uid://cr104fv5eefuk" path="res://Sprites/Lights/danger_light.tres" id="2_6wrbk"]
+[ext_resource type="Texture2D" uid="uid://ccnl3negqbuly" path="res://Sprites/square.tres" id="3_gfh0i"]
+[ext_resource type="PackedScene" uid="uid://b8djyockdb72u" path="res://Prefabs/light_up_area.tscn" id="4_5cp5y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ytib"]
+size = Vector2(8, 1)
+
+[node name="Spike" type="Area2D"]
+script = ExtResource("1_330nq")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+modulate = Color(1, 0, 0, 1)
+z_index = 1
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_uujbv")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 4)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8ytib")
+
+[node name="Glow" type="Sprite2D" parent="."]
+clip_children = 1
+z_index = 10
+position = Vector2(0, -6)
+texture = ExtResource("3_gfh0i")
+region_enabled = true
+region_rect = Rect2(0, 0, 24, 12)
+
+[node name="Glow2" type="Sprite2D" parent="Glow"]
+modulate = Color(1, 0, 0, 0.25098)
+position = Vector2(0, 6)
+rotation = 0.785398
+texture = ExtResource("2_6wrbk")
+region_rect = Rect2(0, 0, 24, 12)
+
+[node name="LightUpArea" parent="." instance=ExtResource("4_5cp5y")]
+size = 12.0
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

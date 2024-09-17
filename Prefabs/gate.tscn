@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://c3axt3c0nu6s"]
+
+[ext_resource type="Texture2D" uid="uid://ccnl3negqbuly" path="res://Sprites/square.tres" id="1_07upf"]
+[ext_resource type="Script" path="res://Scripts/gate.gd" id="1_8o073"]
+[ext_resource type="Texture2D" uid="uid://ba0oubqb1ud30" path="res://Sprites/Lights/gate_light.tres" id="2_ore62"]
+[ext_resource type="PackedScene" uid="uid://b8djyockdb72u" path="res://Prefabs/light_up_area.tscn" id="3_yb3b5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_so2ge"]
+size = Vector2(2, 16)
+
+[node name="Gate" type="Node2D" node_paths=PackedStringArray("shrink_area")]
+modulate = Color(0.615686, 0.807843, 0.847059, 1)
+script = ExtResource("1_8o073")
+shrink_area = NodePath("ShrinkArea")
+
+[node name="ShrinkArea" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="ShrinkArea"]
+position = Vector2(0, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShrinkArea/StaticBody2D"]
+shape = SubResource("RectangleShape2D_so2ge")
+
+[node name="Sprite2D" type="Sprite2D" parent="ShrinkArea/StaticBody2D"]
+scale = Vector2(1, 8)
+texture = ExtResource("1_07upf")
+
+[node name="Glow" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -8)
+texture = ExtResource("2_ore62")
+
+[node name="LightUpArea" parent="." instance=ExtResource("3_yb3b5")]
+position = Vector2(0, -8)
+gizmo_extents = 12.0
+size = 24.0
